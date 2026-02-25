@@ -49,6 +49,13 @@ int main() {
         response += "Served by backend: " + std::string(hostname) + "\n";
         
         send(client_fd, response.c_str(), response.length(), 0);
+        
+        // Shutdown write side to ensure data is sent
+        shutdown(client_fd, SHUT_WR);
+        
+        // Small delay to ensure response is fully transmitted
+        usleep(10000);
+        
         close(client_fd);
     }
     
